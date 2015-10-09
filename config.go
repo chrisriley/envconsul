@@ -50,6 +50,9 @@ type Config struct {
 	// Retry is the duration of time to wait between Consul failures.
 	Retry time.Duration `json:"retry" mapstructure:"retry"`
 
+	// EnvPrefix is a prefix added to the keys returned from consul
+	EnvPrefix string `json:"env_prefix" mapstructure:"env_prefix"`
+
 	// Sanitize converts any "bad" characters in key values to underscores
 	Sanitize bool `json:"sanitize" mapstructure:"sanitize"`
 
@@ -159,6 +162,10 @@ func (c *Config) Merge(config *Config) {
 
 	if config.WasSet("retry") {
 		c.Retry = config.Retry
+	}
+
+	if config.WasSet("env_prefix") {
+		c.EnvPrefix = config.EnvPrefix
 	}
 
 	if config.WasSet("sanitize") {
@@ -415,6 +422,7 @@ func DefaultConfig() *Config {
 			Enabled:  false,
 			Facility: "LOCAL0",
 		},
+		EnvPrefix:  "",
 		Sanitize:   false,
 		Upcase:     false,
 		Timeout:    5 * time.Second,

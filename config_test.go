@@ -263,6 +263,7 @@ func TestParseConfig_correctValues(t *testing.T) {
 		Path:     configFile.Name(),
 		Consul:   "nyc1.demo.consul.io",
 		MaxStale: time.Second * 5,
+		EnvPrefix: "",
 		Upcase:   false,
 		Sanitize: false,
 		Timeout:  5 * time.Second,

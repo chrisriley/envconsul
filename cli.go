@@ -280,6 +280,12 @@ func (cli *CLI) parseFlags(args []string) (*Config, []string, bool, bool, error)
 		return nil
 	}), "retry", "")
 
+	flags.Var((funcVar)(func(s string) error {
+		config.EnvPrefix = s
+		config.set("env_prefix")
+		return nil
+	}), "env-prefix", "")
+
 	flags.Var((funcBoolVar)(func(b bool) error {
 		config.Sanitize = b
 		config.set("sanitize")
@@ -367,6 +373,7 @@ Options:
   -prefix                  A prefix to watch, multiple prefixes are merged from
                            left to right, with the right-most result taking
                            precedence
+  -env-prefix              A prefix added to the keys returned from consul
   -sanitize                Replace invalid characters in keys to underscores
   -upcase                  Convert all environment variable keys to uppercase
   -kill-signal             The signal to send to kill the process

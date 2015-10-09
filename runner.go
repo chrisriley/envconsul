@@ -228,6 +228,10 @@ func (r *Runner) Run() (<-chan int, error) {
 				continue
 			}
 
+			if (r.config.EnvPrefix != "") {
+				key = fmt.Sprint(r.config.EnvPrefix, key);
+			}
+
 			if r.config.Sanitize {
 				key = InvalidRegexp.ReplaceAllString(key, "_")
 			}
