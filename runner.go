@@ -222,6 +222,12 @@ func (r *Runner) Run() (<-chan int, error) {
 		for _, pair := range data {
 			key, value := pair.Key, string(pair.Value)
 
+			// It is not possible to have an environment variable that is blank, but
+			// it is possible to have an environment variable _value_ that is blank.
+			if strings.TrimSpace(key) == "" {
+				continue
+			}
+
 			if r.config.Sanitize {
 				key = InvalidRegexp.ReplaceAllString(key, "_")
 			}
@@ -264,7 +270,7 @@ func (r *Runner) Run() (<-chan int, error) {
 	var cmdEnv []string
 
 	if r.config.Pristine {
-		cmdEnv = make([]string, len(r.env), len(r.env))
+		cmdEnv = make([]string, 0)
 	} else {
 		processEnv := os.Environ()
 		cmdEnv = make([]string, len(processEnv), len(r.env)+len(processEnv))
